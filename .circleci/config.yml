@@ -21,7 +21,7 @@ jobs:
       - image: cimg/base:2020.06
     steps:
       - run:
-          name: "Install Stubb"
+          name: "Install Para"
           command: |
             PARA_VER=0.2.0
             DL_URL="https://github.com/halseylabs/para/releases/download/v${PARA_VER}/para-v${PARA_VER}-linux-amd64.tar.gz"

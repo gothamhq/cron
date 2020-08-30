@@ -1,0 +1,32 @@
+version: 2.1
+
+workflows:
+  main:
+    jobs:
+      - para-metrics
+  daily:
+    triggers:
+      - schedule:
+          cron: "0 10 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - para-metrics
+
+jobs:
+  para-metrics:
+    docker:
+      - image: cimg/base:2020.06
+    steps:
+      - run:
+          name: "Install Stubb"
+          command: |
+            PARA_VER=0.2.0
+            DL_URL="https://github.com/halseylabs/para/releases/download/v${PARA_VER}/para-v${PARA_VER}-linux-amd64.tar.gz"
+            curl -sSL $DL_URL | sudo tar -xz -C /usr/local/bin para
+      - run:
+          name: "Run Para"
+          command: |
+            para fetch --github="gothamhq/gotham" --brew="gothamhq/tap/gotham" --dockerhub="hubci/gotham"
